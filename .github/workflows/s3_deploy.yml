@@ -4,10 +4,6 @@ on:
   workflow_dispatch:
   release:
     types: [created]
-  
-env:
-  AWS_REGION: ap-south-1 
-  S3_BUCKET: s3://manjoy.in
 
 jobs:
   deploy:
@@ -27,7 +23,7 @@ jobs:
         aws-region: ${{ vars.AWS_REGION }}
 
     - name: Deploy static site to S3
-      run: aws s3 sync ./build ${{ vars.S3_BUCKET }} --delete
+      run: aws s3 sync ./ ${{ vars.S3_BUCKET }} --delete
 
     - name: Invalidate Cloudfront Cache
       run: aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
